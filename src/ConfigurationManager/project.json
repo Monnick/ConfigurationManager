@@ -1,0 +1,26 @@
+{
+  "title": "ConfigurationManager",
+  "authors": [ "Monnick" ],
+  "copyright": "Monnick",
+  "description": "A configuration manager to map json settings files to data transfer objects.",
+  "language": "en",
+  "version": "1.0.0",
+
+  "dependencies": {
+    "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration": "1.0.0",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Binder": "1.0.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "System.ComponentModel.TypeConverter": "4.1.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
