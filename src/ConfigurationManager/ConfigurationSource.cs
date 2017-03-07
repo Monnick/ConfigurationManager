@@ -14,8 +14,12 @@ namespace ConfigurationManager
 		private IConfigurationRoot _standardRoot;
 		
 		public ConfigurationSource(IConfigurationBuilder builder)
+			: this(builder.Build())
 		{
-			_standardRoot = builder.Build();
+		}
+		public ConfigurationSource(IConfigurationRoot config)
+		{
+			_standardRoot = config;
 		}
 		public ConfigurationSource(IHostingEnvironment env, string settingsFile)
 		{
@@ -66,6 +70,9 @@ namespace ConfigurationManager
 
 		public void Bind(string prefix, Type t, object dataObject)
 		{
+			if (dataObject == null)
+				return;
+
 			var properties = t.GetProperties();
 			foreach (var property in properties.Where(p => p.SetMethod.IsPublic))
 			{

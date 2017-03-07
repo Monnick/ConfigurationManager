@@ -22,5 +22,10 @@ namespace ConfigurationManager
 		/// <param name="settingsFile">The path to the appsettings file</param>
 		void Initialize(IHostingEnvironment env, string settingsFile);
 
+		/// <summary>
+		/// Initializes the configuration manager.
+		/// </summary>
+		/// <param name="config">The configuration created by an outside context</param>
+		void Initialize(IConfigurationRoot config);
 	}
 }

@@ -30,16 +30,16 @@ namespace ConfigurationManager
 			Configuration = null;
 		}
 		
-		private void InitializeConfiguration(IConfigurationBuilder builder)
+		private void InitializeConfiguration(IConfigurationRoot config)
 		{
 			if (Configuration == null)
-				Configuration = new ConfigurationSource(builder);
+				Configuration = new ConfigurationSource(config);
 			else throw new InvalidOperationException("already initialized");
 		}
 		
 		public void Initialize(IConfigurationBuilder builder)
 		{
-			InitializeConfiguration(builder);
+			InitializeConfiguration(builder.Build());
 
 		}
 		
@@ -50,7 +50,12 @@ namespace ConfigurationManager
 				.AddJsonFile(settingsFile, optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables();
 
-			InitializeConfiguration(builder);
+			InitializeConfiguration(builder.Build());
+		}
+
+		public void Initialize(IConfigurationRoot config)
+		{
+			InitializeConfiguration(config);
 		}
 
 		public void Bind(string prefix, Type t, object dataObject)
