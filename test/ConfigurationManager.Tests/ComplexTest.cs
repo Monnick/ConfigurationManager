@@ -9,11 +9,8 @@ namespace ConfigurationManager.Tests
 {
 	public class ComplexTest : IClassFixture<ConfigurationFixture>
 	{
-		private ConfigurationManager _sut;
-
 		public ComplexTest(ConfigurationFixture fixture)
 		{
-			_sut = fixture.Fixture;
 		}
 
 		[Fact]
@@ -21,7 +18,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.Equal("complex string simple", complex.String);
 		}
@@ -31,7 +28,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.Equal(15, complex.Integer);
 		}
@@ -41,7 +38,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.Equal("complex-string", complex.Complex.String);
 		}
@@ -51,7 +48,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.Equal(9, complex.Complex.Integer);
 		}
@@ -61,7 +58,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.NotEqual("complex-readonly", complex.Complex.StringReadonly);
 		}
@@ -71,7 +68,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.NotEqual(11, complex.Complex.IntegerReadonly);
 		}
@@ -81,7 +78,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.NotEqual("complex-private", complex.Complex.GetStringPrivate());
 		}
@@ -91,7 +88,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockComplex complex = new Mocks.MockComplex();
 
-			_sut.Bind("complex", complex);
+			ConfigurationManager.Manager.Bind("complex", complex);
 
 			Assert.NotEqual(13, complex.Complex.GetIntegerPrivate());
 		}

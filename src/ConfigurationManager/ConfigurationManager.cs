@@ -1,94 +1,86 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ConfigurationManager
 {
-	public sealed class ConfigurationManager : IConfigurationManager
+	public class ConfigurationManager : IConfigurationManager
 	{
-		private IConfigurationRoot _standardRoot;
+		private static Lazy<IConfigurationManager> _instance = new Lazy<IConfigurationManager>(() => new ConfigurationManager());
 
-		public ConfigurationManager()
-			: this("appsettings.json")
-		{ }
-		public ConfigurationManager(string settingsFile)
+		public static IConfigurationManager Manager
 		{
-			var builder = new ConfigurationBuilder()
-				.AddJsonFile(settingsFile, optional: true, reloadOnChange: true)
-				.AddEnvironmentVariables();
-
-			_standardRoot = builder.Build();
+			get { return _instance.Value; }
 		}
-		public ConfigurationManager(IHostingEnvironment env, string settingsFile)
+
+		private IConfigurationSource Configuration { get; set; }
+
+		public string this[string key]
+		{
+			get { return Configuration[key]; }
+			set { Configuration[key] = value; }
+		}
+
+		private ConfigurationManager()
+		{
+			Configuration = null;
+		}
+		
+		private void InitializeConfiguration(IConfigurationBuilder builder)
+		{
+			if (Configuration == null)
+				Configuration = new ConfigurationSource(builder);
+			else throw new InvalidOperationException("already initialized");
+		}
+		
+		public void Initialize(IConfigurationBuilder builder)
+		{
+			InitializeConfiguration(builder);
+
+		}
+		
+		public void Initialize(IHostingEnvironment env, string settingsFile)
 		{
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
 				.AddJsonFile(settingsFile, optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables();
-			
-			_standardRoot = builder.Build();
-		}
-		
-		public string this[string key]
-		{
-			get
-			{
-				return _standardRoot[key];
-			}
-			set
-			{
-				_standardRoot[key] = value;
-			}
+
+			InitializeConfiguration(builder);
 		}
 
-		public IEnumerable<IConfigurationSection> GetChildren()
+		public void Bind(string prefix, Type t, object dataObject)
 		{
-			return _standardRoot.GetChildren();
+			Configuration?.Bind(prefix, t, dataObject);
 		}
 
-		public IChangeToken GetReloadToken()
+		public void Bind<T>(string prefix, T dataObject)
 		{
-			return _standardRoot.GetReloadToken();
-		}
-
-		public IConfigurationSection GetSection(string key)
-		{
-			return _standardRoot.GetSection(key);
+			Configuration?.Bind(prefix, dataObject);
 		}
 
 		public void Reload()
 		{
-			_standardRoot.Reload();
-		}
-		
-		public void Bind(string prefix, object dto)
-		{
-			Type t = dto.GetType();
-
-			var properties = t.GetProperties();
-			foreach (var property in properties.Where(p => p.SetMethod.IsPublic))
-			{
-				string key = prefix + "." + property.Name;
-				if (PropertyTypeIsBasic(property.PropertyType.GetTypeInfo()))
-				{
-					object value = ConfigurationBinder.GetValue(this, property.PropertyType, key, property.GetValue(dto));
-					property.SetValue(dto, value);
-				}
-				else
-				{
-					Bind(key, property.GetValue(dto));
-				}
-			}
+			Configuration?.Reload();
 		}
 
-		private bool PropertyTypeIsBasic(TypeInfo t)
+		public IConfigurationSection GetSection(string key)
 		{
-			return t.IsPrimitive || t.IsValueType || t.UnderlyingSystemType == typeof(string);
+			return Configuration?.GetSection(key);
+		}
+
+		public IEnumerable<IConfigurationSection> GetChildren()
+		{
+			return Configuration?.GetChildren();
+		}
+
+		public IChangeToken GetReloadToken()
+		{
+			return Configuration?.GetReloadToken();
 		}
 	}
 }

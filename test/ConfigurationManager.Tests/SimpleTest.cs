@@ -6,11 +6,8 @@ namespace ConfigurationManager.Tests
 {
 	public class SimpleTest : IClassFixture<ConfigurationFixture>
 	{
-		private ConfigurationManager _sut;
-
 		public SimpleTest(ConfigurationFixture fixture)
 		{
-			_sut = fixture.Fixture;
 		}
 
 		[Fact]
@@ -18,7 +15,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.Equal("string", simple.String);
 		}
@@ -28,7 +25,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.Equal(2, simple.Integer);
 		}
@@ -38,7 +35,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.NotEqual("readonly", simple.StringReadonly);
 		}
@@ -48,7 +45,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.NotEqual(4, simple.IntegerReadonly);
 		}
@@ -58,7 +55,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.NotEqual("private", simple.GetStringPrivate());
 		}
@@ -68,7 +65,7 @@ namespace ConfigurationManager.Tests
 		{
 			Mocks.MockClass simple = new Mocks.MockClass();
 
-			_sut.Bind("simple", simple);
+			ConfigurationManager.Manager.Bind("simple", simple);
 
 			Assert.NotEqual(6, simple.GetIntegerPrivate());
 		}

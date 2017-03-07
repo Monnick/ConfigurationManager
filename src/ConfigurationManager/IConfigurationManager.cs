@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,20 @@ using System.Threading.Tasks;
 
 namespace ConfigurationManager
 {
-	public interface IConfigurationManager : IConfigurationRoot
+	public interface IConfigurationManager : IConfigurationSource
 	{
-		void Bind(string prefix, object dto);
+		/// <summary>
+		/// Initializes the configuration manager.
+		/// </summary>
+		/// <param name="builder">The configuration builder to access the settings file and environment data</param>
+		void Initialize(IConfigurationBuilder builder);
+
+		/// <summary>
+		/// Initializes the configuration manager.
+		/// </summary>
+		/// <param name="env">The hosting environment</param>
+		/// <param name="settingsFile">The path to the appsettings file</param>
+		void Initialize(IHostingEnvironment env, string settingsFile);
+
 	}
 }

@@ -1,18 +1,27 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace ConfigurationManager.Tests.Helper
 {
-	public class ConfigurationFixture
+	public class ConfigurationFixture : IDisposable
 	{
-		public ConfigurationManager Fixture { get; set; }
-
 		public ConfigurationFixture()
 		{
-			Fixture = new ConfigurationManager(System.IO.Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\appsettings.json"));
+			var builder = new ConfigurationBuilder()
+				.AddJsonFile(System.IO.Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\appsettings.json"), optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables();
+
+			ConfigurationManager.Manager.Initialize(builder);
+		}
+	
+		public void Dispose()
+		{
+			// no data to dispose
 		}
 	}
 }
