@@ -18,20 +18,21 @@ and simplified:
 "editor.Font.Type":"Menlo",
 ```
 ## Pro and Cons
+
 ### Pro
-* the simplified format is better readable
-* writing the simplified format is much easier
+* the simplified format is better readable   
+* writing the simplified format is much easier   
 
 ### Cons
-* the simplified format is less structured (as intended)
-* the properties / data does not have to be ordered
-* the needed data size to store the file is bigger
+* the simplified format is less structured (as intended)   
+* the properties / data does not have to be ordered   
+* the needed data size to store the file is bigger   
 
 ## Initialization
-Before using the configuration manager, an initialization to the appsettings file is needed. Two methods provides the needed functionality:
-1. 'void Initialize(IConfigurationBuilder builder)' for using within a ASP.Net context with already created configuration builder.
-2. 'void Initialize(IHostingEnvironment env, string settingsFile)' for initializing with an environment and a settings file.
-3. 'void Initialize(IConfigurationRoot)' for using within an already initialized context.
+Before using the configuration manager, an initialization to the appsettings file is needed. Two methods provides the needed functionality:   
+1. 'void Initialize(IConfigurationBuilder builder)' for using within a ASP.Net context with already created configuration builder.   
+2. 'void Initialize(IHostingEnvironment env, string settingsFile)' for initializing with an environment and a settings file.   
+3. 'void Initialize(IConfigurationRoot config)' for using within an already initialized context.   
 ## Using
 The appsettings content reflect the internal data structure of the used configuration objects:
 ```c#
